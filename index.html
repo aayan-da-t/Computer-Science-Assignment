@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aim Trainer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="game-section">
+            <div class="ui-panel">
+                <h2>Score: <span id="score">0</span></h2>
+                <h2>Time: <span id="timer">30</span>s</h2>
+                <button id="start-btn">Start Game</button>
+            </div>
+            
+            <div id="arena">
+                <div id="target"></div>
+            </div>
+        </div>
+
+        <div class="leaderboard-section">
+            <h2>Top Scores</h2>
+            <ol id="leaderboardList">
+                </ol>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
