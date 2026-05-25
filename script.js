@@ -1,111 +1,101 @@
-// --- DOM ELEMENTS ---
 const arena = document.getElementById('arena');
 const target = document.getElementById('target');
+const decoys = document.querySelectorAll('.decoy');
 const scoreDisplay = document.getElementById('score');
 const timerDisplay = document.getElementById('timer');
 const startBtn = document.getElementById('start-btn');
+const clearBtn = document.getElementById('clear-btn');
 const leaderboardList = document.getElementById('leaderboardList');
 
-// --- GAME VARIABLES ---
 let score = 0;
-let timeLeft = 30;
+let timeLeft = 10.0; 
+let timeBonus = 1.0; 
 let gameInterval;
 
-// --- INITIALIZE ---
-// Load the leaderboard as soon as the page opens
+// Load the leaderboard immediately
 renderLeaderboard();
 
-// --- GAME LOGIC ---
-
-function moveTarget() {
-    // Get max dimensions so the box doesn't spawn outside the arena
-    const maxX = arena.clientWidth - target.clientWidth;
-    const maxY = arena.clientHeight - target.clientHeight;
-
-    // Generate random X and Y coordinates
+function moveElement(element) {
+    const maxX = arena.clientWidth - element.clientWidth;
+    const maxY = arena.clientHeight - element.clientHeight;
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
 
-    // Apply new coordinates
-    target.style.left = `${randomX}px`;
-    target.style.top = `${randomY}px`;
+    element.style.left = `${randomX}px`;
+    element.style.top = `${randomY}px`;
 }
 
-// When the target is clicked
+function randomizePositions() {
+    moveElement(target);
+    decoys.forEach(decoy => moveElement(decoy));
+}
+
+// Click Good Target
 target.addEventListener('click', () => {
     score++;
     scoreDisplay.innerText = score;
-    moveTarget();
+    
+    timeLeft += timeBonus;
+    timeBonus = timeBonus * 0.9; 
+    timerDisplay.innerText = timeLeft.toFixed(1); 
+    
+    randomizePositions();
+});
+
+// Click Bad Decoy
+decoys.forEach(decoy => {
+    decoy.addEventListener('click', () => {
+        score--;
+        scoreDisplay.innerText = score;
+        randomizePositions();
+    });
 });
 
 function startGame() {
-    // Reset stats
     score = 0;
-    timeLeft = 30;
+    timeLeft = 10.0;
+    timeBonus = 1.0; 
     scoreDisplay.innerText = score;
-    timerDisplay.innerText = timeLeft;
+    timerDisplay.innerText = timeLeft.toFixed(1);
     
-    // Update UI
     startBtn.disabled = true;
     target.style.display = 'block';
+    decoys.forEach(decoy => decoy.style.display = 'block');
     
-    moveTarget();
+    randomizePositions();
 
-    // Start Timer Loop
     gameInterval = setInterval(() => {
-        timeLeft--;
-        timerDisplay.innerText = timeLeft;
+        timeLeft -= 0.1;
+        timerDisplay.innerText = Math.max(0, timeLeft).toFixed(1);
 
-        if (timeLeft <= 0) {
-            endGame();
-        }
-    }, 1000);
+        if (timeLeft <= 0) endGame();
+    }, 100); 
 }
 
 function endGame() {
-    // Stop game visually
     clearInterval(gameInterval);
     target.style.display = 'none';
+    decoys.forEach(decoy => decoy.style.display = 'none');
     startBtn.disabled = false;
 
-    // Prompt for username, fallback to Anonymous if left blank
     let playerName = prompt(`Time's up! You scored ${score}. Enter your name:`);
-    if (!playerName) {
-        playerName = "Anonymous";
-    }
+    if (!playerName) playerName = "Anonymous";
 
     saveToLeaderboard(playerName, score);
 }
 
-// --- LEADERBOARD LOGIC ---
-
 function saveToLeaderboard(name, finalScore) {
-    // Pull existing data, or create an empty array if none exists
     let leaderboard = JSON.parse(localStorage.getItem('aimLeaderboard')) || [];
-
-    // Add new score
     leaderboard.push({ name: name, score: finalScore });
-
-    // Sort by highest score first
     leaderboard.sort((a, b) => b.score - a.score);
-
-    // Keep only the Top 10
     leaderboard = leaderboard.slice(0, 10);
-
-    // Save back to local storage
     localStorage.setItem('aimLeaderboard', JSON.stringify(leaderboard));
-
-    // Update the visual list on the screen
     renderLeaderboard();
 }
 
 function renderLeaderboard() {
     let leaderboard = JSON.parse(localStorage.getItem('aimLeaderboard')) || [];
-    
-    // Clear current list
     leaderboardList.innerHTML = ""; 
-
-    // Inject each score as a list item
     leaderboard.forEach(entry => {
         let listItem = document.createElement('li');
         listItem.innerText = `${entry.name}: ${entry.score}`;
@@ -113,5 +103,16 @@ function renderLeaderboard() {
     });
 }
 
-// Wire up the start button
+// Clear Leaderboard with Passcode
+clearBtn.addEventListener('click', () => {
+    let passcode = prompt("Enter the 5-digit admin code to clear the leaderboard:");
+    if (passcode === "95801") {
+        localStorage.removeItem('aimLeaderboard');
+        renderLeaderboard();
+        alert("Success: Leaderboard has been wiped.");
+    } else if (passcode !== null) {
+        alert("Incorrect code. The leaderboard is safe.");
+    }
+});
+
 startBtn.addEventListener('click', startGame);
