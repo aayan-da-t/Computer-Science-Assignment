@@ -1,0 +1,99 @@
+/* General Page Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a2e;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    margin: 0;
+}
+
+/* Layout Container */
+.container {
+    display: flex;
+    gap: 40px;
+}
+
+/* Top UI Bar */
+.ui-panel {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.ui-panel h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #0f3460;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #e94560;
+}
+
+button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+/* The Playing Field */
+#arena {
+    width: 600px;
+    height: 400px;
+    background-color: #16213e;
+    position: relative; /* Essential for confining the target */
+    border: 3px solid #0f3460;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+}
+
+/* The Target */
+#target {
+    width: 40px;
+    height: 40px;
+    background-color: #e94560;
+    position: absolute; /* Essential for moving via JS */
+    border-radius: 50%; /* Makes it a circle */
+    cursor: crosshair;
+    display: none; /* Hidden until start */
+    transition: transform 0.1s;
+}
+
+#target:active {
+    transform: scale(0.8); /* Shrinks slightly when clicked */
+}
+
+/* Leaderboard Panel */
+.leaderboard-section {
+    background-color: #16213e;
+    padding: 20px;
+    border-radius: 8px;
+    border: 3px solid #0f3460;
+    width: 250px;
+}
+
+.leaderboard-section h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #0f3460;
+    padding-bottom: 10px;
+}
+
+#leaderboardList {
+    padding-left: 20px;
+    font-size: 18px;
+    line-height: 1.8;
+}
