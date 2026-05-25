@@ -1,4 +1,3 @@
-/* General Page Styling */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #1a1a2e;
@@ -9,13 +8,11 @@ body {
     margin: 0;
 }
 
-/* Layout Container */
 .container {
     display: flex;
     gap: 40px;
 }
 
-/* Top UI Bar */
 .ui-panel {
     display: flex;
     gap: 20px;
@@ -40,44 +37,55 @@ button {
     transition: 0.2s;
 }
 
-button:hover {
-    background-color: #e94560;
+button:hover { background-color: #e94560; }
+button:disabled { background-color: #555; cursor: not-allowed; }
+
+.instructions {
+    background-color: #0f3460;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: -5px;
+    margin-bottom: 15px;
 }
 
-button:disabled {
-    background-color: #555;
-    cursor: not-allowed;
-}
-
-/* The Playing Field */
 #arena {
     width: 600px;
     height: 400px;
     background-color: #16213e;
-    position: relative; /* Essential for confining the target */
+    position: relative; 
     border: 3px solid #0f3460;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
 }
 
-/* The Target */
 #target {
     width: 40px;
     height: 40px;
     background-color: #e94560;
-    position: absolute; /* Essential for moving via JS */
-    border-radius: 50%; /* Makes it a circle */
+    position: absolute; 
+    border-radius: 50%;
     cursor: crosshair;
-    display: none; /* Hidden until start */
+    display: none; 
     transition: transform 0.1s;
 }
 
-#target:active {
-    transform: scale(0.8); /* Shrinks slightly when clicked */
+#target:active { transform: scale(0.8); }
+
+.decoy {
+    width: 40px;
+    height: 40px;
+    background-color: #4da8da; 
+    position: absolute; 
+    border-radius: 50%;
+    cursor: crosshair;
+    display: none;
+    transition: transform 0.1s;
 }
 
-/* Leaderboard Panel */
+.decoy:active { transform: scale(0.8); }
+
 .leaderboard-section {
     background-color: #16213e;
     padding: 20px;
@@ -96,4 +104,14 @@ button:disabled {
     padding-left: 20px;
     font-size: 18px;
     line-height: 1.8;
+}
+
+#clear-btn {
+    background-color: #8b0000;
+    margin-top: 20px;
+    width: 100%;
+}
+
+#clear-btn:hover {
+    background-color: #ff0000;
 }
