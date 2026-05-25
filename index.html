@@ -13,12 +13,20 @@
         <div class="game-section">
             <div class="ui-panel">
                 <h2>Score: <span id="score">0</span></h2>
-                <h2>Time: <span id="timer">30</span>s</h2>
+                <h2>Time: <span id="timer">10.0</span>s</h2>
                 <button id="start-btn">Start Game</button>
             </div>
             
+            <p class="instructions">
+                <strong>How to play:</strong> Click the red dot to score points and gain bonus time. 
+                Bonus time decreases with every click! Avoid the blue dots, or you will lose a point.
+            </p>
+            
             <div id="arena">
                 <div id="target"></div>
+                <div class="decoy"></div>
+                <div class="decoy"></div>
+                <div class="decoy"></div>
             </div>
         </div>
 
@@ -26,6 +34,7 @@
             <h2>Top Scores</h2>
             <ol id="leaderboardList">
                 </ol>
+            <button id="clear-btn">Clear Leaderboard</button>
         </div>
 
     </div>
